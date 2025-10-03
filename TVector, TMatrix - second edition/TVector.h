@@ -25,10 +25,10 @@ public:
     TDynamicVector(T* arr, size_t sz);
 
     // ����������� �����������
-    TDynamicVector(const TDynamicVector& v);
+    TDynamicVector(const TDynamicVector<T>& v);
 
     // ����������� �����������
-    TDynamicVector(TDynamicVector&& v) noexcept;
+    TDynamicVector(TDynamicVector<T>&& v) noexcept;
 
     // ����������
     ~TDynamicVector();
@@ -36,10 +36,10 @@ public:
     //---------------------------------------------------------
 
     // ������������
-    TDynamicVector& operator=(const TDynamicVector& v);
+    TDynamicVector<T>& operator=(const TDynamicVector<T>& v);
 
     // ������������ ������������
-    TDynamicVector& operator=(TDynamicVector&& v) noexcept;
+    TDynamicVector<T>& operator=(TDynamicVector<T>&& v) noexcept;
 
     size_t GetSize() const noexcept { return size; }
 
@@ -56,34 +56,34 @@ public:
     const T& at(size_t ind) const;
 
     // ���������
-    bool operator==(const TDynamicVector& v) const noexcept;
-    bool operator!=(const TDynamicVector& v) const noexcept;
+    bool operator==(const TDynamicVector<T>& v) const noexcept;
+    bool operator!=(const TDynamicVector<T>& v) const noexcept;
 
     // ��������� ��������
-    TDynamicVector operator+(T val);
-    TDynamicVector operator-(T val);
-    TDynamicVector operator*(T val);
+    TDynamicVector<T> operator+(T val);
+    TDynamicVector<T> operator-(T val);
+    TDynamicVector<T> operator*(T val);
 
     // ��������� ��������
-    TDynamicVector operator+(const TDynamicVector& v);
-    TDynamicVector operator-(const TDynamicVector& v);
-    T operator*(const TDynamicVector& v) noexcept(noexcept(T())); // What if T() doesn't exist?
+    TDynamicVector<T> operator+(const TDynamicVector<T>& v);
+    TDynamicVector<T> operator-(const TDynamicVector<T>& v);
+    T operator*(const TDynamicVector<T>& v) noexcept(noexcept(T())); // What if T() doesn't exist?
 
     // �����
-    friend void swap(TDynamicVector& lhs, TDynamicVector& rhs) noexcept
+    friend void swap(TDynamicVector<T>& lhs, TDynamicVector<T>& rhs) noexcept
     {
         std::swap(lhs.sz, rhs.sz);
         std::swap(lhs.pMem, rhs.pMem);
     }
 
     // ����/�����
-    friend istream& operator>>(istream& istr, TDynamicVector& v)
+    friend istream& operator>>(istream& istr, TDynamicVector<T>& v)
     {
         for (size_t i = 0; i < v.sz; i++)
             istr >> v.pMem[i]; // ��������� ��������>> ��� ���� T
         return istr;
     }
-    friend ostream& operator<<(ostream& ostr, const TDynamicVector& v)
+    friend ostream& operator<<(ostream& ostr, const TDynamicVector<T>& v)
     {
         for (size_t i = 0; i < v.sz; i++)
             ostr << v.pMem[i] << ' '; // ��������� ��������<< ��� ���� T
