@@ -24,6 +24,9 @@ public:
 	// индексация без контроля
 	using TDynamicVector<TDynamicVector<T>>::operator[];
 
+	// получение размера
+	size_t GetSize() const noexcept { return size; }
+
 	// сравнение
 	bool operator==(const TDynamicMatrix& m) const noexcept;
 	bool operator!=(const TDynamicMatrix& m) const noexcept;
@@ -39,7 +42,11 @@ public:
 	TDynamicMatrix operator-(const TDynamicMatrix& m);
 	TDynamicMatrix operator*(const TDynamicMatrix& m);
 
+	// swap
+	void swap(TDynamicMatrix& lhs, TDynamicMatrix& rhs) noexcept;
+
 	// ввод/вывод
+
 	friend std::istream& operator>>(std::istream& istr, TDynamicMatrix<T>& v)
 	{
 		for (size_t i = 0; i < v.size; i++)

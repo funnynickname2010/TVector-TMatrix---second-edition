@@ -182,3 +182,11 @@ TDynamicMatrix<T> TDynamicMatrix<T>::operator*(const TDynamicMatrix<T>& m)
 	}
 	return result;
 }
+
+// swap
+template <class T>
+void TDynamicMatrix<T>::swap(TDynamicMatrix& lhs, TDynamicMatrix& rhs) noexcept
+{
+	std::swap(lhs.size, rhs.size);
+	std::swap(lhs.pMem, rhs.pMem);
+}
