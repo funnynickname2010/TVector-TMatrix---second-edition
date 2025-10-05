@@ -1,6 +1,4 @@
-﻿#include "TVector.h"
-
-// ������������ � ���������� ---------------------------------------------------------
+﻿// ������������ � ���������� ---------------------------------------------------------
 
 template <class T>
 TDynamicVector<T>::TDynamicVector(size_t sz) : size(sz)
@@ -15,15 +13,7 @@ TDynamicVector<T>::TDynamicVector(size_t sz) : size(sz)
         throw std::length_error("Vector size exceeds maximum allowed size");
     }
 
-    try
-    {
-        // Allocate and default-initialize memory for T objects
-        pMem = new T[sz]();
-    }
-    catch (const std::bad_alloc&)
-    {
-        throw; // rethrow the exception
-    }
+    pMem = new T[sz]();
 }
 
 template <class T>
@@ -44,38 +34,24 @@ TDynamicVector<T>::TDynamicVector(T* arr, size_t sz) : size(sz)
         throw std::length_error("Vector size exceeds maximum allowed size");
     }
 
-    try
-    {
-        pMem = new T[sz];
-    }
-    catch (const std::bad_alloc&)
-    {
-        throw; // rethrow the exception
-    }
+    pMem = new T[sz];
     std::copy(arr, arr + sz, pMem);
 }
 
 template <class T>
 TDynamicVector<T>::TDynamicVector(const TDynamicVector<T>& v) : size(v.size)
 {
-    try
-    {
-        pMem = new T[size];
-    }
-    catch (const std::bad_alloc&)
-    {
-        throw; // rethrow the exception
-    }
+    pMem = new T[size];
     std::copy(v.pMem, v.pMem + size, pMem);
 }
 
 template <class T>
 TDynamicVector<T>::TDynamicVector(TDynamicVector<T>&& v) noexcept : size(v.size), pMem(v.pMem)
 {
-    v.size = 0;
-    // Transfer ownership of memory
-    // ???
-    v.pMem = nullptr;
+	std::swap(v.size, size);
+	std::swap(v.pMem, pMem);
+    size = 0;
+	pMem = nullptr;
 }
 
 template <class T>
@@ -98,14 +74,9 @@ TDynamicVector<T>& TDynamicVector<T>::operator=(const TDynamicVector<T>& v)
         if (size != v.size)
         {
             T* newMem = nullptr;
-            try
-            {
-                newMem = new T[v.size];
-            }
-            catch (const std::bad_alloc&)
-            {
-                throw; // rethrow the exception
-            }
+
+            newMem = new T[v.size];
+
             delete[] pMem; // free old memory
             pMem = newMem;
             size = v.size;
@@ -276,32 +247,4 @@ T TDynamicVector<T>::operator*(const TDynamicVector<T>& v) noexcept(noexcept(T()
         result += pMem[i] * v.pMem[i];
     }
     return result;
-}
-
-// ����/����� -----------------------------------------------------------------
-
-template <class T>
-istream& operator>>(istream& istr, TDynamicVector<T>& v)
-{
-    for (size_t i = 0; i < v.size; i++)
-        istr >> v.pMem[i];
-
-    return istr;
-}
-
-template <class T>
-ostream& operator<<(ostream& ostr, const TDynamicVector<T>& v)
-{
-    // (1
-    ostr << '(';
-    ostr << v.pMem[0];
-
-    // , 2, 3, ..., n)
-    for (size_t i = 1; i < v.size; i++)
-        ostr << ', ' << v.pMem[i];
-
-    // )
-    ostr << ')';
-
-    return ostr;
 }

@@ -4,17 +4,10 @@
 //
 //
 
-#ifndef __TDynamicMatrix_H__
-#define __TDynamicMatrix_H__
-
 #include <iostream>
 #include "TVector.h"
 
-using namespace std;
-
-#ifndef MAX_MATRIX_SIZE
-#define const int MAX_MATRIX_SIZE 10000;
-#endif // !MAX_MATRIX_SIZE
+static constexpr size_t MAX_MATRIX_SIZE = 10000;
 
 // Динамическая матрица - 
 // шаблонная матрица на динамической памяти
@@ -47,7 +40,24 @@ public:
 	TDynamicMatrix operator*(const TDynamicMatrix& m);
 
 	// ввод/вывод
-	friend istream& operator>>(istream& istr, TDynamicMatrix& v);
-	friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& v);
+	friend std::istream& operator>>(std::istream& istr, TDynamicMatrix<T>& v)
+	{
+		for (size_t i = 0; i < v.size; i++)
+		{
+			istr >> v.pMem[i];
+			std::cout << std::endl;
+		}
+		return istr;
+	}
+
+	friend std::ostream& operator<<(std::ostream& ostr, const TDynamicMatrix<T>& v)
+	{
+		for (size_t i = 0; i < v.size; i++)
+		{
+			ostr << v.pMem[i] << std::endl;
+		}
+		return ostr;
+	}
 };
-#endif
+
+#include "TMatrix.tpp"

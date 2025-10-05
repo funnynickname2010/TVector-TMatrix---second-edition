@@ -1,6 +1,4 @@
-﻿#include "TMatrix.h"
-
-// ����������� �� ��������� --------------------------------------------------------
+﻿// ����������� �� ��������� --------------------------------------------------------
 template <class T>
 TDynamicMatrix<T>::TDynamicMatrix(size_t s) : TDynamicVector<TDynamicVector<T>>(s)
 {
@@ -150,7 +148,7 @@ TDynamicMatrix<T> TDynamicMatrix<T>::operator*(const TDynamicMatrix<T>& m)
 	bool size_fine = true;
 	if (size != m.size)
 	{
-		size_equal = false;
+		size_fine = false;
 	}
 	else
 	{
@@ -158,7 +156,7 @@ TDynamicMatrix<T> TDynamicMatrix<T>::operator*(const TDynamicMatrix<T>& m)
 		{
 			if (pMem[i].GetSize() != m.pMem[i].GetSize())
 			{
-				size_equal = false;
+				size_fine = false;
 				break;
 			}
 		}
@@ -183,26 +181,4 @@ TDynamicMatrix<T> TDynamicMatrix<T>::operator*(const TDynamicMatrix<T>& m)
 		}
 	}
 	return result;
-}
-
-// ����/����� -----------------------------------------------------------------
-template <class T>
-istream& operator>>(istream& istr, TDynamicMatrix<T>& v)
-{
-	for (size_t i = 0; i < v.size; i++)
-	{
-		istr >> v.pMem[i];
-		std::cout << std::endl;
-	}
-	return istr;
-}
-
-template <class T>
-ostream& operator<<(ostream& ostr, const TDynamicMatrix<T>& v)
-{
-	for (size_t i = 0; i < v.size; i++)
-	{
-		ostr << v.pMem[i] << std::endl;
-	}
-	return ostr;
 }
