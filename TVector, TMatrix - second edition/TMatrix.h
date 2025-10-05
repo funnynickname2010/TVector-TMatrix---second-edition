@@ -46,7 +46,6 @@ public:
 	void swap(TDynamicMatrix& lhs, TDynamicMatrix& rhs) noexcept;
 
 	// ввод/вывод
-
 	friend std::istream& operator>>(std::istream& istr, TDynamicMatrix<T>& v)
 	{
 		for (size_t i = 0; i < v.size; i++)

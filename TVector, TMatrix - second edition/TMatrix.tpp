@@ -1,4 +1,17 @@
-﻿// ����������� �� ��������� --------------------------------------------------------
+﻿// Constructor --------------------------------------------------------
+
+/**
+ * @brief Конструктор квадратной матрицы размера s.
+ *
+ * Создаёт матрицу размера s × s, вызывая конструктор базового вектора
+ * TDynamicVector<TDynamicVector<T>> для выделения памяти под строки,
+ * затем инициализирует каждую строку как TDynamicVector<T>(size).
+ *
+ * @tparam T Тип элементов матрицы.
+ * @param s Размер (количество строк и столбцов) матрицы.
+ * @throws std::out_of_range если s == 0.
+ * @throws std::length_error если s > MAX_MATRIX_SIZE.
+ */
 template <class T>
 TDynamicMatrix<T>::TDynamicMatrix(size_t s) : TDynamicVector<TDynamicVector<T>>(s)
 {
@@ -18,7 +31,17 @@ TDynamicMatrix<T>::TDynamicMatrix(size_t s) : TDynamicVector<TDynamicVector<T>>(
 	}
 }
 
-// ��������� -----------------------------------------------------------------
+// Equality/inequality operators -----------------------------------------------------------------
+
+/**
+ * @brief Оператор сравнения на равенство.
+ *
+ * Сравнивает текущую матрицу с матрицей m по размеру и по содержимому каждой строки.
+ *
+ * @tparam T Тип элементов матрицы.
+ * @param m Матрица, с которой производится сравнение.
+ * @return true если размеры совпадают и все соответствующие строки равны, иначе false.
+ */
 template <class T>
 bool TDynamicMatrix<T>::operator==(const TDynamicMatrix<T>& m) const noexcept
 {
@@ -41,13 +64,33 @@ bool TDynamicMatrix<T>::operator==(const TDynamicMatrix<T>& m) const noexcept
 	return result;
 }
 
+/**
+ * @brief Оператор неравенства.
+ *
+ * Инвертирует результат оператора ==.
+ *
+ * @tparam T Тип элементов матрицы.
+ * @param m Матрица для сравнения.
+ * @return true если матрицы различаются, иначе false.
+ */
 template <class T>
 bool TDynamicMatrix<T>::operator!=(const TDynamicMatrix<T>& m) const noexcept
 {
 	return !(*this == m);
 }
 
-// ��������-��������� �������� -----------------------------------------------------------------
+// Matrix-scalar multiplication -----------------------------------------------------------------
+
+/**
+ * @brief Умножение матрицы на скаляр.
+ *
+ * Возвращает новую матрицу, каждый элемент которой равен соответствующему
+ * элементу исходной матрицы, умноженному на val.
+ *
+ * @tparam T Тип элементов матрицы.
+ * @param val Скаляр для умножения.
+ * @return Новая матрица такого же размера, результат умножения.
+ */
 template <class T>
 TDynamicMatrix<T> TDynamicMatrix<T>::operator*(const T& val)
 {
@@ -59,7 +102,18 @@ TDynamicMatrix<T> TDynamicMatrix<T>::operator*(const T& val)
 	return result;
 }
 
-// ��������-��������� �������� -----------------------------------------------------------------
+// Matrix-vector multiplication -----------------------------------------------------------------
+
+/**
+ * @brief Умножение матрицы на вектор (матрица * вектор).
+ *
+ * Выполняет стандартное умножение: результат[i] = dot(pMem[i], v).
+ *
+ * @tparam T Тип элементов матрицы/вектора.
+ * @param v Входной вектор; его размер должен совпадать с размером матрицы.
+ * @throws std::invalid_argument если размер вектора не совпадает с размером матрицы.
+ * @return Вектор-результат умножения размером size.
+ */
 template <class T>
 TDynamicVector<T> TDynamicMatrix<T>::operator*(const TDynamicVector<T>& v)
 {
@@ -75,7 +129,20 @@ TDynamicVector<T> TDynamicMatrix<T>::operator*(const TDynamicVector<T>& v)
 	return result;
 }
 
-// ��������-��������� �������� -----------------------------------------------------------------
+// Matrix-matrix operations -----------------------------------------------------------------
+
+/**
+ * @brief Сложение двух матриц.
+ *
+ * Проверяет совместимость размеров (матрицы должны быть одинакового размера
+ * и соответствующие строки должны иметь одинаковую длину) и возвращает
+ * новую матрицу, в которой каждая строка — сумма соответствующих строк.
+ *
+ * @tparam T Тип элементов матрицы.
+ * @param m Правая матрица для сложения.
+ * @throws std::invalid_argument если размеры несовместимы.
+ * @return Новая матрица — результат сложения.
+ */
 template <class T>
 TDynamicMatrix<T> TDynamicMatrix<T>::operator+(const TDynamicMatrix<T>& m)
 {
@@ -111,6 +178,17 @@ TDynamicMatrix<T> TDynamicMatrix<T>::operator+(const TDynamicMatrix<T>& m)
 	return result;
 }
 
+/**
+ * @brief Вычитание двух матриц.
+ *
+ * Проверяет совместимость размеров и возвращает новую матрицу,
+ * представляющую разность соответствующих строк.
+ *
+ * @tparam T Тип элементов матрицы.
+ * @param m Правая матрица для вычитания.
+ * @throws std::invalid_argument если размеры несовместимы.
+ * @return Новая матрица — результат вычитания.
+ */
 template <class T>
 TDynamicMatrix<T> TDynamicMatrix<T>::operator-(const TDynamicMatrix<T>& m)
 {
@@ -142,6 +220,18 @@ TDynamicMatrix<T> TDynamicMatrix<T>::operator-(const TDynamicMatrix<T>& m)
 	return result;
 }
 
+/**
+ * @brief Умножение двух матриц (матричные произведения).
+ *
+ * Выполняет классическое матричное умножение: result = (*this) * m.
+ * Перед выполнением проверяет совместимость размеров (в данном коде —
+ * квадраты одинакового размера).
+ *
+ * @tparam T Тип элементов матрицы.
+ * @param m Правая матрица для умножения.
+ * @throws std::invalid_argument если размеры несовместимы.
+ * @return Новая матрица — результат умножения.
+ */
 template <class T>
 TDynamicMatrix<T> TDynamicMatrix<T>::operator*(const TDynamicMatrix<T>& m)
 {
@@ -183,7 +273,18 @@ TDynamicMatrix<T> TDynamicMatrix<T>::operator*(const TDynamicMatrix<T>& m)
 	return result;
 }
 
-// swap
+// swap -----------------------------------------------------------------
+
+/**
+ * @brief Обмен (swap) содержимого двух матриц.
+ *
+ * Обменивает значения полей size и указателей pMem между lhs и rhs.
+ * Помечен noexcept — не выбрасывает исключений.
+ *
+ * @tparam T Тип элементов матрицы.
+ * @param lhs Левая матрица.
+ * @param rhs Правая матрица.
+ */
 template <class T>
 void TDynamicMatrix<T>::swap(TDynamicMatrix& lhs, TDynamicMatrix& rhs) noexcept
 {

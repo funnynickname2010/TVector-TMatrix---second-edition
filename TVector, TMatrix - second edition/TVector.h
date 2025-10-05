@@ -3,7 +3,6 @@
 #include <stdexcept>
 #include <algorithm> // for std::copy and std::swap
 
-// prefer a typed constant
 static constexpr size_t MAX_VECTOR_SIZE = 100000000;
 
 template<typename T>
